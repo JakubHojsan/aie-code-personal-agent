@@ -1,21 +1,21 @@
-# Build a personal agent you can text
+# A personal agent you can text
 
-A US-focused developer workshop using the AIE personal-agent architecture: Qwen → Exa search → Kernel browser → Mem0 memory → Linq messaging. The agent process, conversation database, and memory files run on your laptop. Model inference, embeddings, search, Kernel browser sessions, and messaging use hosted services. Your laptop must stay awake and connected to receive messages.
+Build an agent that remembers your preferences, searches the web, and replies on your phone. The workshop starts with a terminal conversation and ends with iMessage: a short answer, a source card, and optional emoji reactions and voice replies.
 
-**Session:** 12-minute overview · 40-minute workshop · 8-minute Q&A. For a 90-minute slot: 12-minute overview · 60-minute workshop · 18-minute Q&A.
+The agent runs on your laptop. Qwen inference, Exa search, Kernel browsers, and Linq messaging run through hosted APIs. Mem0 stores your preferences locally and uses OpenRouter for extraction and embeddings.
 
-[Full deck PDF](slides/DECK.pdf) · [Participant milestones](docs/WORKSHOP.md) · [Linq prework](docs/LINQ.md) · [Facilitator guide](docs/FACILITATOR.md) · [Architecture](docs/ARCHITECTURE.md) · [Exa endpoints and partners](docs/EXA.md)
+[Workshop guide](docs/WORKSHOP.md) · [Slides PDF](slides/DECK.pdf) · [Instructor guide](docs/FACILITATOR.md)
 
-## Choose the version
+## Before you arrive
 
-- **Attendee skeleton:** [starter/integrations.ts](starter/integrations.ts), with five integration TODOs and a source-card exercise. Run `npm run starter:chat`, then `npm run starter:phone`.
-- **Complete instructor version:** [src/agent.ts](src/agent.ts). Run `npm run solution:chat` or `npm run solution:phone`. `npm run chat` and `npm start` remain aliases for the complete version.
+- Git and access to this private repository.
+- Node.js **26.12.1+**, with npm. We recommend [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) for macOS, Linux, or Windows WSL. Install it before class and reopen your terminal.
+- A coding assistant running locally, with support for MCP.
+- An OpenRouter key to start. Arrange Exa, Kernel, and [Linq sandbox access](docs/LINQ.md) before the workshop so you can complete the phone exercises.
 
-Both versions use the shared provider adapters and transport. Starter integrations are injected explicitly and never silently fall back to the completed callbacks. The instructor phone demo does not import the starter.
+## Clone and set up
 
-## Start here
-
-Use Node **26.12.1+**. This directory is a standalone package; all commands below run here. The repository includes the deck, attendee exercises, and complete instructor implementation.
+Run this at the start of the presentation:
 
 ```sh
 git clone https://github.com/JakubHojsan/aie-code-personal-agent.git
@@ -24,68 +24,99 @@ nvm install
 nvm use
 npm ci
 cp .env.example .env
+nano .env
 ```
 
-Run `nano .env` in the project folder: set `WORKSHOP_MILESTONE=1` and your `OPENROUTER_API_KEY`. Set your own `OWNER_PHONE_NUMBER` before starting if you want CLI memories to follow you into Linq. Use your city's IANA timezone, for example `America/New_York` or `America/Los_Angeles`.
+The nvm commands select the version in `.nvmrc`; skip them if you already have Node 26.12.1+ installed. Check with `node --version` and `npm --version`.
+
+Keep `WORKSHOP_MILESTONE=1` and fill in `OPENROUTER_API_KEY`. Save in nano with Ctrl+O, Enter, then Ctrl+X.
+
+| Setting | When you need it |
+| --- | --- |
+| `OPENROUTER_API_KEY` | Model replies; also memory and optional speech |
+| `EXA_API_KEY` | Step 2: web search |
+| `KERNEL_API_KEY` | Step 3: browser sessions |
+| `OWNER_PHONE_NUMBER` | Set before saving memories so terminal and phone share your profile |
+| `LINQ_API_KEY` | Step 5: messaging |
+| `LINQ_PHONE_NUMBER` | Your assigned Linq line, distinct from your own number |
+| `LINQ_WEBHOOK_SECRET` | Returned when you create the webhook subscription |
+
+Use country codes for both phone numbers. Set `AGENT_TIMEZONE` to your local timezone. Mem0 needs no separate API key with the supplied defaults.
+
+## Build during the workshop
+
+First, [connect Exa MCP](docs/MCP.md) to your coding assistant and use it to find the API docs. Then follow the [copyable prompts and checkpoints](docs/WORKSHOP.md).
+
+| Step | What you connect | What to verify |
+| --- | --- | --- |
+| 1 · Model | Qwen through OpenRouter | A reply in your terminal |
+| 2 · Search | Exa Search with highlights | An answer with a source you can check |
+| 3 · Browser | Kernel | Read a page in a browser session |
+| 4 · Memory | Mem0 | A saved preference survives a restart |
+| 5 · Messaging | Linq | Text your agent and receive a reply |
+| 6 · Source cards | Native link previews | Compare a plain URL with a rich card |
+
+Edit [starter/integrations.ts](starter/integrations.ts). The functions are intentionally unfinished: implement each TODO, set the matching `WORKSHOP_MILESTONE` in `.env`, and restart the agent.
 
 ```sh
 npm run doctor
 npm run starter:chat
 ```
 
-Increase `WORKSHOP_MILESTONE` in `.env` and restart the command as you complete each step. The workshop exercises connect each integration in `starter/integrations.ts`; the complete implementation remains in `src/`.
+Use terminal chat through step 4. After [Linq and ngrok setup](docs/LINQ.md), switch to `npm run starter:phone`. The doctor checks configuration; the checkpoint verifies the actual integration.
 
-| Milestone | What you get | How to run |
-| --- | --- | --- |
-| 1 | Model conversation | Model key; `npm run starter:chat` |
-| 2 | Exa web search with highlights | Add `EXA_API_KEY`; `npm run starter:chat` |
-| 3 | Kernel rendered-page inspection | Add `KERNEL_API_KEY`; `npm run starter:chat` |
-| 4 | Persistent Mem0 preferences | Configure embeddings; `npm run starter:chat` |
-| 5 | Linq phone messaging | Complete [prework](docs/LINQ.md); `npm run starter:phone` |
+Optional exercises in [starter/extras.ts](starter/extras.ts) add query-based emoji reactions and voice replies through OpenRouter TTS.
 
-The example file starts at milestone 1. Use the starter commands for the five TODO exercises or the solution commands for the complete version. Each stage adds a capability to the same agent. Kernel uses hosted browser sessions and needs no local browser or Python installation.
+## Run the complete demo
 
-## Present the overview
+The finished implementation lives in `src/` and works independently of the starter exercises.
+
+For a quick terminal reply, keep milestone 1 and run:
 
 ```sh
-npm run slides
+npm run solution:chat
 ```
 
-Open **http://127.0.0.1:3402** for the **12-minute overview**: what Exa does, its Search/Contents/Agent/Monitors APIs, highlights, data partners, and the personal-agent demo. Each API slide links to the relevant docs. Slide 2 asks attendees to clone and install dependencies while the overview runs.
-
-Continue to **slide 14 in the same deck** for the **hands-on walkthrough**. First connect and use [Exa MCP](docs/MCP.md) in your coding assistant; then build model → Exa → Kernel → Mem0 → Linq with copyable prompts, documentation links, and checkpoints. Finish with a sixth feature exercise: compare a text-only search reply with native source cards. Optional extension slides add emoji reactions and OpenRouter-generated voice replies; their unfinished functions are in starter/extras.ts.
-
-Use arrows or Space to advance, **N** for speaker notes, and **F** for fullscreen. View the deck without API keys. The overview’s phone defaults to a labeled authored example; switch to Live agent for real model responses when configured. Live stage chat uses an isolated `.data/stage` profile. Present the actual Messages conversation when verifying Linq transport.
-
-## Run the phone agent
-
-After [Linq setup](docs/LINQ.md), set milestone 5 and run:
+For the full phone demo, fill in the settings above, set `WORKSHOP_MILESTONE=5`, and follow [Linq setup](docs/LINQ.md) to start ngrok and register its HTTPS URL. Once the webhook secret is saved:
 
 ```sh
 npm run doctor
 npm run solution:phone
 ```
 
-In a second terminal, run your preinstalled HTTPS tunnel to port **3400**. Send your provisioned Linq line a message from the owner number in `.env`. Only that owner's direct inbound text messages are accepted. The CLI uses that same owner scope when `OWNER_PHONE_NUMBER` is set. Stop the CLI before using the phone agent; run one process per data directory.
-
-Try these in order:
+Text the Linq number from your configured owner number:
 
 ```text
-/remember I live in San Francisco, love sushi, and aim for $150 per person before tax and tip.
-Find two dinner options in San Francisco for Friday. Use current sources and include menu links.
-My friend wants somewhere quiet. How does that change your recommendation?
+/remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.
+Find a sushi dinner option for Friday.
 /memories
+/voice Tell me about your recommendation in one sentence.
 ```
 
-The memory command runs Mem0 extraction and embedding calls, then verifies persistence. A recommendation is not a reservation. The complete version sends a short summary and one source card by default, chooses an emoji reaction from the request, and supports `/voice` replies. Ask explicitly for multiple sources to receive up to three cards. The starter adds these features through TODOs 6–8.
+Search replies include a short summary and one source card by default. Ask for more sources to get up to three. The complete version also chooses emoji reactions from the request and supports natural requests such as “send me a voice note.”
 
-## Develop and publish
+Keep your laptop awake and ngrok running. If the tunnel URL changes, update the webhook subscription. Stop terminal chat before starting phone mode; use one agent process per data directory. Only messages from the configured owner are accepted.
+
+## Present
 
 ```sh
-npm run typecheck
-npm test
+npm run slides
 ```
 
-Code is [MIT licensed](LICENSE). Exa, OpenRouter, Kernel, and Linq are external services with their own accounts, terms, and usage charges. Mem0 is an open-source component; Qwen supplies the model weights. Kernel provides hosted browser sessions. No GPU is required for this hosted-inference workshop.
+Open [localhost:3402](http://127.0.0.1:3402). One deck covers the 12-minute overview and the workshop, which starts on slide 14. Allow 40 minutes for the core exercises and 8 minutes for Q&A; the optional exercises need extra time.
 
-Keep `.env`, `.data`, and `node_modules` out of version control. The blank `.env.example` is safe to share. For a private repository, grant attendees access before the event so the opening clone command works.
+Arrow keys navigate, **N** opens speaker notes, and **F** enters fullscreen. The deck opens without API keys and includes a labeled worked example. Switch to the live demo when configured.
+
+## Repository
+
+| Folder | Contents |
+| --- | --- |
+| `starter/` | Attendee TODOs and entry points |
+| `src/` | Complete agent and shared adapters |
+| `slides/` | HTML deck, PDF, and speaker notes |
+| `docs/` | Workshop prompts, setup, and instructor notes |
+| `test/` | Agent, memory, browser, and messaging tests |
+
+Run `npm run typecheck` and `npm test` to check changes. After editing embedded slide notes, run `npm run slides:notes` to update the speaker-notes file.
+
+Credentials stay in `.env`; conversations, memory, and audio stay in `.data/`. Both are ignored by Git. The code is [MIT licensed](LICENSE); hosted API usage requires your own accounts and credits.

@@ -1799,7 +1799,7 @@ nav .deck-switch { color: var(--blue-soft); text-decoration: none; margin-right:
 .workshop-prereqs p { color: var(--blue-soft); font-size: 23px; margin: 12px 0 0; }
 .workshop-prereqs p span { margin: 0 22px; color: var(--muted); }
 .clone-kickoff .clone-command { margin-top: 25px; }
-.clone-kickoff .clone-command pre { font-size: 24px; line-height: 1.6; }
+.clone-kickoff .clone-command pre { font-size: 23px; line-height: 1.45; }
 .clone-kickoff .clone-ready { margin-top: 22px; }
 .clone-kickoff .clone-placeholder { margin-top: 20px; }
 
@@ -1854,3 +1854,5 @@ nav .deck-switch { color: var(--blue-soft); text-decoration: none; margin-right:
 
 .optional-voice .build-prompt { font-size: 19px; line-height: 1.65; }
 .optional-feature .prompt-pass p { white-space: pre-line; }
+
+.workshop-prereqs a { color: var(--blue); text-decoration: none; }

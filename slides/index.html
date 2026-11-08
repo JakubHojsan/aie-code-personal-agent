@@ -24,13 +24,15 @@
   <section aria-label="Slide 2" class="slide prompt-slide clone-kickoff" data-time="Setup · during the overview" data-title="Clone now; build after the overview">
     <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Before we begin</span></div>
     <h1>Clone now.<br>Let the install run.</h1>
-    <div class="workshop-prereqs"><span class="mono">Prerequisites</span><p>Node.js 26.12.1+ with npm<span>·</span>A coding agent running locally</p></div><div class="clone-command"><span class="mono">Terminal</span><pre>git clone https://github.com/JakubHojsan/aie-code-personal-agent.git
+    <div class="workshop-prereqs"><span class="mono">Prerequisites</span><p>Node.js 26.12.1+ with npm · <a href="https://github.com/nvm-sh/nvm#installing-and-updating" target="_blank" rel="noopener noreferrer">Install nvm ↗</a><span>·</span>A coding agent running locally</p></div><div class="clone-command"><span class="mono">Terminal</span><pre>git clone https://github.com/JakubHojsan/aie-code-personal-agent.git
 cd aie-code-personal-agent
+nvm install
+nvm use
 npm ci
 cp .env.example .env</pre></div>
-    <div class="clone-ready"><p>Open the repository in your coding assistant.</p><span>Keep it ready. We’ll start with Exa MCP after the overview.</span></div>
+    <div class="clone-ready"><p>Open the repository in your coding assistant.</p><span>nvm reads .nvmrc. Already have Node 26.12.1+? Skip the nvm commands.</span></div>
     <a class="env-template-link" href="#slide-26">Copy the .env template ↗</a>
-    <aside class="speaker-note">Show this at the start, immediately after the cover. Ask everyone to clone and let npm ci run while you present. Configure credentials manually in .env; do not display secrets. The overview keeps its twelve-minute speaking allocation; allow a short setup pause if needed. The first hands-on task after the overview is Exa MCP, not the model TODO. Attendees need Node.js 26.12.1+ with npm as their local package manager, plus an MCP-capable coding agent installed and running locally before class. The coding agent uses hosted models; local model inference is not required.</aside>
+    <aside class="speaker-note">Show this at the start, immediately after the cover. Install nvm before class using the linked official guide (macOS, Linux, or Windows WSL), then reopen the terminal. Run nvm install and nvm use from the cloned project to select the .nvmrc version. Verify node --version and npm --version. A compatible existing Node installation can skip nvm. Ask everyone to clone and let npm ci run while you present. Configure credentials manually in .env; do not display secrets. The overview keeps its twelve-minute speaking allocation; allow a short setup pause if needed. The first hands-on task after the overview is Exa MCP, not the model TODO. Attendees need Node.js 26.12.1+ with npm as their local package manager, plus an MCP-capable coding agent installed and running locally before class. The coding agent uses hosted models; local model inference is not required.</aside>
   </section>
 
   <section aria-label="Slide 3" class="slide exa-intro-overview" data-time="0:20–1:10" data-title="What Exa does">

@@ -8,7 +8,7 @@ Twenty seconds. “By the end, you will have an agent running on your laptop tha
 
 ## 2. Clone now; build after the overview · Setup · during the overview
 
-Show this at the start, immediately after the cover. Ask everyone to clone and let npm ci run while you present. Configure credentials manually in .env; do not display secrets. The overview keeps its twelve-minute speaking allocation; allow a short setup pause if needed. The first hands-on task after the overview is Exa MCP, not the model TODO. Attendees need Node.js 26.12.1+ with npm as their local package manager, plus an MCP-capable coding agent installed and running locally before class. The coding agent uses hosted models; local model inference is not required.
+Show this at the start, immediately after the cover. Install nvm before class using the linked official guide (macOS, Linux, or Windows WSL), then reopen the terminal. Run nvm install and nvm use from the cloned project to select the .nvmrc version. Verify node --version and npm --version. A compatible existing Node installation can skip nvm. Ask everyone to clone and let npm ci run while you present. Configure credentials manually in .env; do not display secrets. The overview keeps its twelve-minute speaking allocation; allow a short setup pause if needed. The first hands-on task after the overview is Exa MCP, not the model TODO. Attendees need Node.js 26.12.1+ with npm as their local package manager, plus an MCP-capable coding agent installed and running locally before class. The coding agent uses hosted models; local model inference is not required.
 
 ## 3. What Exa does · 0:20–1:10
 
