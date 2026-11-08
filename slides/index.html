@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>OSS Personal Agents · Exa workshop</title>
+  <link rel="stylesheet" href="deck.css">
+  <script src="deck.js" type="module"></script>
+  <script src="demo.js" type="module"></script>
+</head>
+<body>
+<main class="viewport" aria-label="Personal agents presentation">
+<div class="canvas">
+  <section aria-label="Slide 1" class="slide active cover editorial-cover" data-time="0:00–0:20" data-title="Personal agents in your messages">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Developer workshop</span></div>
+    <h1>Personal agents.<br><em>In your messages.</em></h1>
+    <p class="subtitle">An open-source agent with memory, search, and a browser.</p>
+    <p class="byline">Jakub Hojsan <span>·</span> FDE Lead at Exa</p>
+    <div class="cover-stack"><span>Qwen</span><span>Exa</span><span>Kernel</span><span>Mem0</span><span>Linq</span></div>
+    <aside class="speaker-note">Twenty seconds. “By the end, you will have an agent running on your laptop that you can text. It will remember a preference, look something up, and answer with a source.” Introduce yourself as FDE Lead at Exa. Establish the concrete outcome; save the vendor tour for the architecture. The application is open source; inference, search, browser infrastructure, and messaging use hosted services.</aside>
+  </section>
+
+  <section aria-label="Slide 2" class="slide prompt-slide clone-kickoff" data-time="Setup · during the overview" data-title="Clone now; build after the overview">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Before we begin</span></div>
+    <h1>Clone now.<br>Let the install run.</h1>
+    <div class="workshop-prereqs"><span class="mono">Prerequisites</span><p>Node.js 26.12.1+ with npm<span>·</span>A coding agent running locally</p></div><div class="clone-command"><span class="mono">Terminal</span><pre>git clone https://github.com/JakubHojsan/aie-code-personal-agent.git
+cd aie-code-personal-agent
+npm ci
+cp .env.example .env</pre></div>
+    <div class="clone-ready"><p>Open the repository in your coding assistant.</p><span>Keep it ready. We’ll start with Exa MCP after the overview.</span></div>
+    <a class="env-template-link" href="#slide-26">Copy the .env template ↗</a>
+    <aside class="speaker-note">Show this at the start, immediately after the cover. Ask everyone to clone and let npm ci run while you present. Configure credentials manually in .env; do not display secrets. The overview keeps its twelve-minute speaking allocation; allow a short setup pause if needed. The first hands-on task after the overview is Exa MCP, not the model TODO. Attendees need Node.js 26.12.1+ with npm as their local package manager, plus an MCP-capable coding agent installed and running locally before class. The coding agent uses hosted models; local model inference is not required.</aside>
+  </section>
+
+  <section aria-label="Slide 3" class="slide exa-intro-overview" data-time="0:20–1:10" data-title="What Exa does">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Overview</span></div><h1>Connect your agent<br>to current information.</h1><p class="overview-lead">Search, content extraction, research, and monitoring through APIs.</p><div class="overview-usecases"><div><h2>Coding agents</h2><p>Find documentation<br>and implementation examples.</p></div><div><h2>Research</h2><p>Gather evidence about<br>companies, markets, and events.</p></div><div><h2>Personal agents</h2><p>Bring your preferences together<br>with information from the world.</p></div></div><a class="overview-doc-link" href="https://exa.ai/docs" target="_blank" rel="noopener noreferrer">Exa documentation ↗</a>
+    <aside class="speaker-note">Fifty seconds. Introduce Exa as the connection between an agent and current information. Use the three use cases as examples rather than customer claims. The talk explains the product choices and demonstrates the outcome. The hands-on session starts after this twelve-minute overview. Dependencies install during the overview; implementation starts afterward. Source: https://exa.ai/docs .</aside>
+  </section>
+
+  <section aria-label="Slide 4" class="slide overview-search overview-api" data-time="1:10–2:10" data-title="Search API">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Search API</span></div><div class="overview-api-title"><h1>Find the sources.</h1><code>POST /search</code></div><p class="overview-lead">Find relevant sources for a question, with page content in the same response.</p><div class="overview-contract"><div><span class="mono">You provide</span><p>A natural-language query</p></div><i>→</i><div><span class="mono">You receive</span><p>Ranked URLs + relevant content</p></div></div><div class="overview-example"><span class="mono">Example</span><p>“Sushi omakase in San Francisco, around $150 per person.”</p></div><div class="overview-api-footer"><span>Used today: Search with highlights.</span><a href="https://exa.ai/docs/search/quickstart" target="_blank" rel="noopener noreferrer">Search API documentation ↗</a></div>
+    <aside class="speaker-note">Sixty seconds. This is the endpoint used in the workshop. Search takes a natural-language query and returns ranked sources. Ask for highlights to include relevant page excerpts. Keep the distinction simple: Search supplies evidence; our personal agent decides what to say. We will wire the tool after the overview, in the workshop. Source: https://exa.ai/docs/search/quickstart .</aside>
+  </section>
+
+  <section aria-label="Slide 5" class="slide overview-contents overview-api" data-time="2:10–2:55" data-title="Contents API">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Contents API</span></div><div class="overview-api-title"><h1>Read URLs you already have.</h1><code>POST /contents</code></div><p class="overview-lead">Extract readable content from a known set of URLs.</p><div class="overview-contract"><div><span class="mono">You provide</span><p>One or more URLs</p></div><i>→</i><div><span class="mono">You receive</span><p>Page text, highlights, or summaries</p></div></div><div class="overview-example"><span class="mono">Example</span><p>“Read the restaurant pages I have already collected.”</p></div><div class="overview-api-footer"><span>Today: content comes from Search.</span><a href="https://exa.ai/docs/contents/quickstart" target="_blank" rel="noopener noreferrer">Contents API documentation ↗</a></div>
+    <aside class="speaker-note">Forty-five seconds. Contents is for the known-URL case. It extracts readable page content, including supported rendered pages and PDFs. Do not claim that all JavaScript pages require a separate browser: Contents can extract rendered content too. In this workshop the Search call already requests highlights, so the complete application does not add a separate Contents request. Kernel later supplies a controlled browser session when the agent specifically needs one. Source: https://exa.ai/docs/contents/quickstart .</aside>
+  </section>
+
+  <section aria-label="Slide 6" class="slide overview-agent overview-api" data-time="2:55–3:55" data-title="Agent API">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Agent API</span></div><div class="overview-api-title"><h1>Delegate the research.</h1><code>POST /agent/runs</code></div><p class="overview-lead">Give Exa a research task and the shape of the result you need.</p><div class="overview-contract"><div><span class="mono">You provide</span><p>A task + an output schema</p></div><i>→</i><div><span class="mono">You receive</span><p>Grounded research + structured results</p></div></div><div class="overview-example"><span class="mono">Example</span><p>“Find companies matching these criteria, then enrich each one.”</p></div><div class="overview-api-footer"><span>Asynchronous research runs.</span><a href="https://exa.ai/docs/agent/quickstart" target="_blank" rel="noopener noreferrer">Agent API documentation ↗</a></div>
+    <aside class="speaker-note">Sixty seconds. Exa Agent is the research product, distinct from the personal agent we are building. It can run multiple searches, read sources, verify criteria, and return structured output. Describe the outcome rather than teaching SDK calls. It is asynchronous and useful when the task involves a research workflow. Premium partner access gets its own slide, rather than being folded into this endpoint explanation. Source: https://exa.ai/docs/agent/quickstart .</aside>
+  </section>
+
+  <section aria-label="Slide 7" class="slide overview-monitors overview-api" data-time="3:55–4:40" data-title="Monitors API">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Monitors API</span></div><div class="overview-api-title"><h1>Follow what changes.</h1><code>POST /monitors</code></div><p class="overview-lead">Repeat a search and receive newly discovered results by webhook.</p><div class="overview-contract"><div><span class="mono">You provide</span><p>A topic + a schedule</p></div><i>→</i><div><span class="mono">You receive</span><p>Updates delivered to your application</p></div></div><div class="overview-example"><span class="mono">Example</span><p>“Tell my application when new local events are announced.”</p></div><div class="overview-api-footer"><span>Optional next step: proactive updates.</span><a href="https://exa.ai/docs/monitors/quickstart" target="_blank" rel="noopener noreferrer">Monitors API documentation ↗</a></div>
+    <aside class="speaker-note">Forty-five seconds. Monitors turns recurring discovery into updates delivered to your application. It is useful for a future proactive personal agent. The workshop code does not implement a scheduler or proactive notifications, so keep this as product context, not a live capability claim. No webhook setup instructions belong in this overview. Source: https://exa.ai/docs/monitors/quickstart .</aside>
+  </section>
+
+  <section aria-label="Slide 8" class="slide exa-today" data-time="4:40–5:50" data-title="Today: Search with highlights">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Highlights</span></div>
+    <h1>Find the price.<br><em>Skip the rest of the page.</em></h1>
+    <div class="evidence-story">
+      <div class="evidence-page"><span class="mono">01 / Source page · illustration</span><div class="page-schematic" role="img" aria-label="Schematic restaurant page with one relevant price passage among other page content"><div class="schematic-address">robinomakase.com ↗</div><div class="schematic-title">Robin · San Francisco</div><div class="page-lines" aria-hidden="true"><i></i><i></i><i></i></div><div class="page-price">Prices range from $119 to $219…</div><div class="page-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div><p>One question.<br>A page full of other information.</p></div>
+      <i class="evidence-arrow" aria-hidden="true">→</i>
+      <div class="evidence-passage"><span class="mono">02 / Relevant evidence</span><blockquote>“Prices range from $119 to $219 depending on each guests unique preferences.”</blockquote><a href="https://www.robinomakase.com/location/robin-san-francisco/" target="_blank" rel="noopener noreferrer">Official San Francisco page ↗</a><p>The source’s own words,<br>with the URL attached.</p></div>
+      <i class="evidence-arrow" aria-hidden="true">→</i>
+      <div class="evidence-answer"><span class="mono">03 / The agent’s answer</span><p class="evidence-conclusion">Your $150 budget is<br>within the published range.</p><p>Confirm a $150 experience.<br>Tax and tip are extra.<br>Availability is still unverified.</p></div>
+    </div>
+    <div class="evidence-setting"><code>contents: { highlights: true }</code><span>Relevant passages → less context for the model to read</span><a href="https://exa.ai/docs/search/highlights" target="_blank" rel="noopener noreferrer">Highlights docs ↗</a></div>
+    <aside class="speaker-note">Seventy seconds. The agent needs the price passage, not everything on a restaurant page. Follow the three columns: source page, relevant evidence, then a qualified answer. The left page is a schematic, not a screenshot or a full-page capture. The middle quote is a verbatim shortened excerpt from a real Search response captured November 6, 2026, with one official San Francisco result selected out of five. The right answer is illustrative, not recorded model output. A $150 budget is inside the published $119–219 range but does not guarantee a $150 experience or a table; confirm with the restaurant. Exa highlights return relevant source passages with URLs, which our loop passes back to the model. The setting shown is the one the workshop implements. We do not claim a measured token reduction or accuracy improvement for this demo. The build section later shows the actual request and tool-result flow. Sources: https://exa.ai/docs/search/highlights ; slides/exa-search-capture.json .</aside>
+  </section>
+
+  <section aria-label="Slide 9" class="slide exa-partners" data-time="5:50–7:00" data-title="Data partners: Search and Agent access paths">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Exa / Data partners</span></div><h1>Partner data reaches<br>agents in different ways.</h1><div class="partner-paths"><div class="partner-path"><span class="mono">Access path 01</span><h2>Through Search</h2><p>Some partner-backed sources resolve<br>into search results.</p><div class="partner-flow"><span>Query</span><i>→</i><code>/search</code><i>→</i><span>Sources + excerpts</span></div><p class="partner-detail">Use the returned evidence in your own agent loop.</p><a href="https://exa.ai/docs/search/data/overview" target="_blank" rel="noopener noreferrer">Search data index ↗</a></div><div class="partner-path"><span class="mono">Access path 02</span><h2>Through Exa Agent</h2><p>Attach partner capabilities to an<br>Agent run through <code>dataSources</code>.</p><div class="partner-flow"><code>/agent/runs</code><i>→</i><span>Partner tools + web research</span></div><div class="partner-examples"><div><img src="assets/similarweb.svg" alt=""><span>Similarweb</span></div><div><img src="assets/financial-datasets.svg" alt=""><span>Financial Datasets</span></div><div><img src="assets/particle.svg" alt=""><span>Particle</span></div></div><a href="https://exa.ai/docs/agent/connect/overview" target="_blank" rel="noopener noreferrer">Exa Connect ↗</a></div></div>
+    <aside class="speaker-note">Seventy seconds. Keep the partner story separate from the endpoint and highlights explanations. State the distinction from the presenter: some partner data resolves through Search; partner capabilities can also be attached through the Exa Agent endpoint. These are access paths, not mutually exclusive provider buckets. Search returns source evidence for our own agent loop. Exa Agent can use the same indexed sources and additionally query attached premium providers through dataSources. Similarweb, Financial Datasets, and Particle are documented Agent/Connect examples, not claims that every provider is enabled in today’s Search request. Do not assign named providers to the Search lane without a verified provider-specific mapping. Mention account availability and enablement briefly. Sources: https://exa.ai/docs/search/data/overview ; https://exa.ai/docs/agent/connect/overview ; https://exa.ai/connect .</aside>
+  </section>
+
+  <section aria-label="Slide 10" class="slide demo" data-time="7:00–9:00" data-title="A table for two">
+    <div class="demo-copy"><div class="brand"><img src="assets/exa.svg" alt="Exa"><span>The demo</span></div><h1>A table<br>for two.</h1><p class="subtitle">The same request, with your context.</p><div class="memory-preview"><span class="mono">Example preferences</span><p>Sushi<br>$150 per person, before tax and tip</p></div><div class="demo-mode" role="group" aria-label="Demo mode"><button id="example-mode" aria-pressed="true">Worked example</button><button id="live-mode" aria-pressed="false">Live agent</button></div><div class="example-actions"><button id="example-next">Next turn →</button><button id="example-reset">Replay</button><span id="example-step">1 / 3</span></div><div class="demo-actions" hidden><button data-prompt="Find a sushi dinner option in San Francisco for Friday under $150 per person before tax and tip. Include the menu source.">Find dinner ↗</button><button data-prompt="My friend wants somewhere quiet tonight. How does that change your recommendation?">Change the plan ↗</button></div></div>
+    <div class="phone-column"><div class="phone"><div class="phone-status"><b>9:41</b><span class="status-icons" aria-hidden="true"><svg viewBox="0 0 18 14"><rect x="1" y="9" width="3" height="4" rx=".8"/><rect x="5.5" y="6" width="3" height="7" rx=".8"/><rect x="10" y="3" width="3" height="10" rx=".8"/><rect x="14.5" y="0" width="3" height="13" rx=".8"/></svg><svg viewBox="0 0 18 14" fill="none"><path d="M1 4.5a12 12 0 0 1 16 0M4 7.5a7.5 7.5 0 0 1 10 0M7 10.5a3 3 0 0 1 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg viewBox="0 0 27 14" fill="none"><rect x="1" y="1" width="22" height="12" rx="3" stroke="currentColor" opacity=".45"/><rect x="3" y="3" width="18" height="8" rx="1.5" fill="currentColor"/><path d="M25 5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div><div class="island"></div><div class="phone-header"><span class="back">‹</span><div class="avatar">PA</div><strong>Personal agent <span>›</span></strong></div><div class="messages" id="messages" aria-live="polite"><p class="message-date">Your agent · running on your laptop</p><div class="stage-empty"><span>Start with what matters to you.</span><code>/remember I live in San Francisco,<br>love sushi, and budget<br>$150 per person before tax and tip.</code><button id="remember-prompt">Use this preference ↗</button></div></div><form id="chat-form"><label class="sr-only" for="chat-input">Message your agent</label><textarea id="chat-input" placeholder="Message your agent" rows="1"></textarea><button id="send" aria-label="Send message">↑</button></form><div class="example-composer" aria-hidden="true"><span>+</span><div>iMessage<svg viewBox="0 0 20 24" fill="none"><rect x="7" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M4 10v2a6 6 0 0 0 12 0v-2M10 18v4M6 22h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div></div><div class="home-indicator"></div></div><p class="phone-disclosure" id="connection">Authored example · not recorded agent output</p></div>
+    <aside class="speaker-note">Two minutes. The default mode is a worked example based on the official Robin San Francisco page checked on November 6, 2026. It is authored teaching content, not a captured model response. Advance through the dinner request, its sourced answer, and the quiet-room constraint. Note that the omakase experience and published price range are supported; a quiet dining room and table availability are not. For a real demonstration, switch to Live agent or show Messages with Linq. Stage chat uses the actual answer function and an isolated stage profile. Stop after two minutes, even if a live request is slow; the source evidence was shown earlier in the overview.</aside>
+  </section>
+
+  <section aria-label="Slide 11" class="slide loop-slide" data-time="9:00–10:10" data-title="From message to answer">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Architecture</span></div>
+    <h1>From message to answer.</h1>
+    <div class="machine" data-step="0"><svg viewBox="0 0 1380 420" role="img" aria-label="Mem0 recalls preferences. Qwen chooses Exa search, Kernel browser inspection, or a reply. Tool results return to Qwen."><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke"/></marker></defs><g class="edges" fill="none" marker-end="url(#arrow)"><path class="edge-memory" d="M305 100H435Q480 100 480 170H540"/><path class="edge-search" marker-start="url(#arrow)" d="M840 170H910Q950 170 950 100H1050"/><path class="edge-browser" marker-start="url(#arrow)" d="M840 210H910Q950 210 950 310H1050"/><path class="edge-reply" marker-start="url(#arrow)" d="M540 210H480Q435 210 435 310H305"/></g><g class="node memory-node"><rect x="25" y="45" width="280" height="110" rx="7"/><text x="53" y="86">Memory</text><image href="assets/mem0.svg" x="53" y="108" width="54" height="22"/><text class="provider" x="122" y="125">Preferences</text></g><g class="node model-node"><rect x="540" y="130" width="300" height="120" rx="7"/><text x="570" y="175">Model</text><image href="assets/qwen.png" x="570" y="196" width="28" height="28"/><text class="provider" x="611" y="218">Qwen</text></g><g class="node search-node"><rect x="1050" y="45" width="305" height="110" rx="7"/><text x="1078" y="86">Search</text><image href="assets/exa.svg" x="1078" y="108" width="53" height="20"/><text class="provider" x="1148" y="125">Search evidence</text></g><g class="node browser-node"><rect x="1050" y="255" width="305" height="110" rx="7"/><text x="1078" y="296">Browser</text><text class="provider" x="1078" y="335">Kernel</text></g><g class="node reply-node"><rect x="25" y="255" width="280" height="110" rx="7"/><text x="53" y="296">Messages</text><text class="provider" x="53" y="335">Linq</text></g></svg></div>
+    <aside class="speaker-note">Seventy seconds. Explain the roles without walking through code: Qwen decides the next action, Exa supplies search evidence, Kernel supplies a browser session when useful, Mem0 supplies personal context, and Linq carries messages. Tool results return to the model. Automatic memory recall is application-managed in the current repo; the explicit /remember command saves preferences. Do not imply that every capability is a model-callable tool. The workshop will show the integration boundaries in order. Explain aloud that the laptop hosts the loop, queue, and Mem0 files, while inference, Exa, Kernel, and Linq are hosted services. The next slide shows that hosting split. The diagram is static; follow its arrows rather than running a simulated trace.</aside>
+  </section>
+
+  <section aria-label="Slide 12" class="slide boundaries" data-time="10:10–11:00" data-title="What runs locally">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>The application</span></div><h1>Your laptop runs<br>the agent.</h1><div class="hosting"><div><span class="mono">On your laptop</span><p>Agent loop<br>Conversation history<br>Mem0 storage</p></div><div class="hosting-wire"><span>API calls</span><svg viewBox="0 0 200 40"><path d="M0 20H200m-10-7 10 7-10 7"/></svg></div><div><span class="mono">Hosted capabilities</span><p>Qwen inference + embeddings<br>Exa search · Kernel browser<br>Linq messaging</p></div></div><p class="footnote">The laptop and HTTPS tunnel stay running while you message the agent.</p>
+    <aside class="speaker-note">Fifty seconds. Be precise about the local-hosting promise. The application and saved context are on the laptop. Inference, embeddings, Exa, Kernel, and Linq are hosted. This explains the ownership and availability boundary. The workshop is where participants configure the accounts and connect the services; keep commands off this slide.</aside>
+  </section>
+
+  <section aria-label="Slide 13" class="slide overview-handoff" data-time="11:00–12:00" data-title="Start the hands-on workshop">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>After the overview</span></div><h1>Now build your agent.</h1><p class="overview-lead">Start with Exa MCP, then connect the five integrations.</p><div class="handoff-sequence"><span>Model</span><i>→</i><span>Exa</span><i>→</i><span>Kernel</span><i>→</i><span>Mem0</span><i>→</i><span>Linq</span></div><a class="workshop-launch" href="#slide-14">Start the workshop ↗</a><p class="handoff-description">Your repository is ready. Connect Exa MCP,<br>then implement and verify one integration at a time.</p><div class="workshop-doc-links"><span>Docs:</span><a href="https://openrouter.ai/docs/quickstart" target="_blank" rel="noopener noreferrer">Model ↗</a><a href="https://exa.ai/docs/search/quickstart" target="_blank" rel="noopener noreferrer">Exa ↗</a><a href="https://www.kernel.sh/docs/start/quickstart" target="_blank" rel="noopener noreferrer">Kernel ↗</a><a href="https://docs.mem0.ai/open-source/node-quickstart" target="_blank" rel="noopener noreferrer">Mem0 ↗</a><a href="https://docs.linqapp.com/channel/imessage/guides/webhooks/" target="_blank" rel="noopener noreferrer">Linq ↗</a></div>
+    <aside class="speaker-note">Sixty seconds. This is the explicit boundary between the twelve-minute presentation and the hands-on workshop. Finish the overview, then advance to slide 14 in this same deck. The walkthrough starts by connecting Exa MCP and using it to find the official API documentation, then prompting the coding assistant to implement one TODO at a time. It then covers model, Exa, Kernel, Mem0, and Linq. SDK snippets, configuration, coding prompts, and verification steps live in that walkthrough and the participant guide, not in the overview.</aside>
+  </section>
+
+  <section aria-label="Slide 14" class="slide prompt-slide mcp-start" data-time="Workshop 0:00–3:00" data-title="Connect and try Exa MCP">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Workshop / Exa MCP</span></div>
+    <h1>Connect Exa. Try one search.</h1>
+    <div class="mcp-steps"><div class="mcp-connect"><span class="mono">01 / Connect</span><h2>Open the setup page.</h2><a class="mcp-install" href="https://exa.ai/mcp" target="_blank" rel="noopener noreferrer">exa.ai/mcp ↗</a><p>Choose your coding assistant.<br>Follow its installation steps.<br>Reconnect and confirm Exa is enabled.</p><div class="mcp-address"><span>Remote server URL</span><code>https://mcp.exa.ai/mcp</code></div></div><div class="mcp-try"><div class="prompt-label"><span class="mono">02 / Paste this prompt</span><button class="copy-prompt" data-copy="prompt-mcp">Copy prompt</button></div><pre class="build-prompt" id="prompt-mcp">Use Exa to find the official Search API docs.
+Show how to request highlights.
+Cite the official documentation URL.
+Do not write code yet.</pre></div></div>
+    <div class="mcp-success"><span class="mono">03 / Check</span><p>You see an Exa tool call and a link to the official docs.</p></div>
+    <aside class="speaker-note">Three minutes. Everyone cloned at the beginning. Now open https://exa.ai/mcp, choose the actual coding assistant, and connect the hosted server https://mcp.exa.ai/mcp named exa. Restart or reconnect the client if required. Paste the on-screen prompt and verify an actual Exa MCP tool invocation, not an answer from model memory. The current default search tool is web_search_exa. It should return official Exa documentation with a source URL. If the client does not expose Exa tools, fix setup before proceeding. Hosted anonymous access has rate limits; arrange authenticated access for a large class. This MCP connection belongs to the attendee’s coding assistant. The application they build still calls Search directly in TODO 2. Setup source: https://exa.ai/mcp and https://github.com/exa-labs/exa-mcp-server . This slide intentionally separates installation from one small verification prompt. Read the local repo after this checkpoint, at the model step.</aside>
+  </section>
+
+  <section aria-label="Slide 15" class="slide prompt-slide teach-slide teach-model" data-time="Workshop 3:00–7:00" data-title="1. Model: prompt, run, check">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 01 / Model</span></div>
+    <h1>Get one real reply.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding assistant</span><button class="copy-prompt" data-copy="prompt-model">Copy prompt</button></div><pre class="build-prompt" id="prompt-model">Read starter/README.md and src/model.ts.
+Implement TODO 1 in starter/integrations.ts.
+Connect complete(); forward messages, tools, and signal.
+Leave TODOs 2–5 unfinished. Run npm run typecheck.
+Show how to verify a real reply with starter:chat.</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 1</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Configure &amp; run</span><pre class="prompt-setup">WORKSHOP_MILESTONE=1
+OPENROUTER_API_KEY in .env</pre><pre class="prompt-run">npm run doctor
+npm run starter:chat</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>A real model reply appears in your terminal.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Help me plan a Friday sushi dinner in San Francisco.</p></div><a class="workshop-api-doc" href="https://openrouter.ai/docs/quickstart" target="_blank" rel="noopener noreferrer">Model docs ↗</a></div>
+    <aside class="speaker-note">The model transport is supplied. Attendees connect callModel, rather than rebuilding the loop. Set credentials manually in .env. Stop here until a real response works. Set the milestone in .env and restart. Verify the checkpoint before continuing.</aside>
+  </section>
+
+  <section aria-label="Slide 16" class="slide prompt-slide teach-slide teach-exa" data-time="Workshop 7:00–13:00" data-title="2. Exa API: prompt, run, check">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 02 / Exa API</span></div>
+    <h1>Give it current sources.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding assistant</span><button class="copy-prompt" data-copy="prompt-exa">Copy prompt</button></div><pre class="build-prompt" id="prompt-exa">Use Exa MCP to find the official Search API docs.
+Implement TODO 2 in starter/integrations.ts.
+POST /search: type auto, numResults 5, highlights true.
+Preserve URLs and retrieval time; bound the evidence.
+Use the existing tool loop. Run npm run typecheck.</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 2</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Configure &amp; run</span><pre class="prompt-setup">WORKSHOP_MILESTONE=2
+EXA_API_KEY in .env</pre><pre class="prompt-run">npm run doctor
+npm run starter:chat</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>Open one returned URL and verify a claim.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Find sushi in San Francisco under $150 per person before tax and tip. Include sources.</p></div><a class="workshop-api-doc" href="https://exa.ai/docs/search/quickstart" target="_blank" rel="noopener noreferrer">Exa API docs ↗</a></div>
+    <aside class="speaker-note">The coding assistant uses Exa MCP to research the API. The personal agent uses a direct POST to https://api.exa.ai/search with x-api-key, JSON Content-Type, and contents: { highlights: true }. Keep the supplied loop: matching tool_call_id, evidence returned as a tool message, then another model call. Do not add Contents or Agent calls. Set the milestone in .env and restart. Verify the checkpoint before continuing.</aside>
+  </section>
+
+  <section aria-label="Slide 17" class="slide prompt-slide teach-slide teach-kernel" data-time="Workshop 13:00–19:00" data-title="3. Kernel: prompt, run, check">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 03 / Kernel</span></div>
+    <h1>Read a page in a browser.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding assistant</span><button class="copy-prompt" data-copy="prompt-kernel">Copy prompt</button></div><pre class="build-prompt" id="prompt-kernel">Use Exa MCP to find the official Kernel browser docs.
+Read src/browser.ts; implement TODO 3 only.
+Connect browse() in starter/integrations.ts.
+Forward URL, question, and signal unchanged.
+Keep URL validation and cleanup. Run typecheck.</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 3</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Configure &amp; run</span><pre class="prompt-setup">WORKSHOP_MILESTONE=3
+KERNEL_API_KEY in .env</pre><pre class="prompt-run">npm run doctor
+npm run starter:chat</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>A real Kernel session returns the page’s price text.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Open https://www.robinomakase.com/location/robin-san-francisco/ and read the omakase price range.</p></div><a class="workshop-api-doc" href="https://www.kernel.sh/docs/start/quickstart" target="_blank" rel="noopener noreferrer">Kernel docs ↗</a></div>
+    <aside class="speaker-note">Browser use is conditional: Search highlights may already answer the question. This explicit URL-reading request demonstrates the difference. The supplied adapter creates a session, executes fixed read-only code, and deletes the session in finally. Preserve its host restriction, timeouts, and independent cleanup signal. No local browser installation is needed. Set the milestone in .env and restart. Verify the checkpoint before continuing.</aside>
+  </section>
+
+  <section aria-label="Slide 18" class="slide prompt-slide teach-slide teach-mem0" data-time="Workshop 19:00–26:00" data-title="4. Mem0: prompt, run, check">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 04 / Mem0</span></div>
+    <h1>Remember after a restart.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding assistant</span><button class="copy-prompt" data-copy="prompt-mem0">Copy prompt</button></div><pre class="build-prompt" id="prompt-mem0">Use Exa MCP to find the official Mem0 OSS docs.
+Read src/memory.ts; implement TODO 4 only.
+Return personalMemory(store) from connectMemory.
+Keep owner scope, recall, and explicit /remember.
+Run typecheck; show a save → restart → recall check.</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 4</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Configure &amp; run</span><pre class="prompt-setup">WORKSHOP_MILESTONE=4
+Owner + embeddings configured</pre><pre class="prompt-run">npm run starter:chat</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>Restart, send /memories, then ask for dinner without repeating your preferences.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>/remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.
+/memories</p></div><a class="workshop-api-doc" href="https://docs.mem0.ai/open-source/node-quickstart" target="_blank" rel="noopener noreferrer">Mem0 docs ↗</a></div>
+    <aside class="speaker-note">Mem0 is integrated as application-managed recall before the model, with explicit /remember writes. It is not a model-callable tool in this repository. Local storage survives restart. Extraction and embeddings use configured providers; no Mem0 API key is required. Configure OWNER_PHONE_NUMBER before saving so terminal and phone share a profile. Use /exit and restart the CLI to verify persistence. Set the milestone in .env and restart. Verify the checkpoint before continuing.</aside>
+  </section>
+
+  <section aria-label="Slide 19" class="slide prompt-slide linq-token-slide" data-time="Workshop 26:00–28:00" data-title="Linq: activate sandbox and generate token">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Linq / Account setup</span></div>
+    <h1>Activate your sandbox.<br>Generate your API token.</h1>
+    <ol class="token-steps"><li><span>01</span><p>Open <a href="https://dashboard.linqapp.com/sandbox" target="_blank" rel="noopener noreferrer">Linq sandbox ↗</a>.<br>Verify your account for the 7-day trial.</p></li><li><span>02</span><p>Activate your sandbox.<br>Click <strong>Generate new token</strong>.</p></li><li><span>03</span><p>In your project folder, run <code>nano .env</code>.<br>Add <code>LINQ_API_KEY=your_token</code>.</p></li></ol>
+    <img class="token-screenshot" src="assets/linq-api-tokens.png" alt="Linq API Tokens panel with a Generate new token button. The supplied screenshot is labeled Production tokens.">
+    <div class="token-caption"><span>Choose the sandbox environment (screenshot: Production).</span><a href="https://docs.linqapp.com/channel/imessage/getting-started/quickstart/" target="_blank" rel="noopener noreferrer">Linq setup guide ↗</a></div>
+    <aside class="speaker-note">Open the sandbox dashboard, verify the account, activate the sandbox, and generate a token. From your project folder, run nano .env and add LINQ_API_KEY=your_token. Save with Ctrl+O, press Enter, then exit with Ctrl+X. Do not project the token value. The presenter-provided screenshot shows the API Tokens panel in Production; use the sandbox environment for this exercise and do not imply the displayed production token is a sandbox token. LINQ_WEBHOOK_SECRET is different: it is the signing_secret returned when creating the webhook subscription. Next, create the webhook; slide 21 verifies phone delivery.</aside>
+  </section>
+
+  <section aria-label="Slide 20" class="slide prompt-slide tunnel-slide" data-time="Workshop 28:00–30:00" data-title="ngrok: connect Linq to your laptop">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Linq / Webhook setup</span></div>
+    <h1>Give Linq a URL to your laptop.</h1>
+    <div class="tunnel-columns"><div><span class="mono">01 / Start the tunnel</span><a href="https://ngrok.com/download" target="_blank" rel="noopener noreferrer" class="ngrok-install">Install ngrok ↗</a><div class="ngrok-account"><img src="assets/ngrok-authtoken.png" alt="ngrok dashboard sidebar: Getting Started, Your Authtoken selected."><div><a href="https://dashboard.ngrok.com/get-started/your-authtoken" target="_blank" rel="noopener noreferrer">Your Authtoken ↗</a><p>Copy your token.<br>Authenticate once:</p></div></div><pre class="ngrok-auth-command">ngrok config add-authtoken YOUR_AUTHTOKEN</pre><pre>ngrok http 3400</pre><p>Keep this terminal running.<br>Copy the HTTPS forwarding URL.</p></div><div class="webhook-automation"><div class="prompt-label"><span class="mono">02 / Ask your coding agent</span><button class="copy-prompt" data-copy="prompt-webhook">Copy prompt</button></div><p>Your Linq API key can create the subscription.</p><pre class="build-prompt" id="prompt-webhook">Read docs/LINQ.md. Use LINQ_API_KEY from .env.
+Get the HTTPS URL from ngrok at 127.0.0.1:4040/api/tunnels.
+Create a Linq V3 webhook subscription via the API:
+  target: HTTPS URL + /webhooks/linq?version=2026-02-03
+  event: message.received
+  phone filter: LINQ_PHONE_NUMBER from .env
+Save signing_secret as LINQ_WEBHOOK_SECRET in .env.
+Keep the subscription ID. Do not print any secrets.
+Check for an existing subscription; avoid duplicates.</pre><div class="webhook-saved"><span class="mono">03 / Check</span><p>The subscription exists and <code>LINQ_WEBHOOK_SECRET</code> is saved.</p></div></div></div>
+    <div class="tunnel-footer"><span>The agent starts after the secret is saved. Update Linq if the tunnel URL changes.</span><a href="https://docs.linqapp.com/channel/imessage/guides/webhooks/subscriptions/" target="_blank" rel="noopener noreferrer">Webhook guide ↗</a></div>
+    <aside class="speaker-note">Complete ngrok installation and account authentication before class using its official download guide. The first-time command is ngrok config add-authtoken with the account's actual token. Do not show it on the projector. Start ngrok http 3400 before starting the agent: it can supply the public URL while the local service is stopped. Register that URL with /webhooks/linq?version=2026-02-03 appended, event message.received, and the assigned phone-number filter. Ask the coding agent to use the authenticated Linq V3 webhook-subscriptions API and save the returned signing_secret in project-root .env as LINQ_WEBHOOK_SECRET without printing it. The on-screen prompt is the primary setup path; manual dashboard creation is optional. Inspect existing subscriptions before creating a new one; if one already exists with the correct target and a saved secret, reuse it. Update its URL if the tunnel changed and retain its secret. If a subscription exists but its secret was lost, do not claim it can be retrieved; explain the recovery options before recreating it. Do not invent a secret or reuse the API key. Save in nano with Ctrl+O, Enter, Ctrl+X. The supplied agent validates all configuration at startup, so it cannot start before the secret is saved. Then use the next slide to start starter:phone, or solution:phone for the instructor. Check local and public /healthz, then text the assigned line from the configured owner. Keep the laptop awake and ngrok running. Sandbox recipients must message the line first. Sources: https://ngrok.com/download ; https://docs.linqapp.com/channel/imessage/guides/webhooks/subscriptions/ .</aside>
+  </section>
+
+  <section aria-label="Slide 21" class="slide prompt-slide teach-slide teach-linq" data-time="Workshop 30:00–35:00" data-title="5. Linq: prompt, run, check">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 05 / Linq</span></div>
+    <h1>Text the agent on your laptop.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding assistant</span><button class="copy-prompt" data-copy="prompt-linq">Copy prompt</button></div><pre class="build-prompt" id="prompt-linq">Use Exa MCP to find the official Linq webhook docs.
+Read docs/LINQ.md; implement TODO 5 only.
+Connect sendReply using config.linqKey.
+Forward chat, reply, and the idempotency key.
+Keep the queue and signature checks. Run typecheck.
+For now: sendReply(key, chat, reply, id, fetch, []).</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 5</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Run</span><pre class="prompt-setup">WORKSHOP_MILESTONE=5
+Keys + webhook saved in .env</pre><pre class="prompt-run">npm run doctor
+npm run starter:phone</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>Your phone receives a sourced reply from the agent running on your laptop.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Text your provisioned line: “Find dinner for Friday using my saved preferences.”</p></div><a class="workshop-api-doc" href="https://docs.linqapp.com/channel/imessage/guides/webhooks/" target="_blank" rel="noopener noreferrer">Linq docs ↗</a><a href="https://docs.linqapp.com/channel/imessage/getting-started/quickstart/" target="_blank" rel="noopener noreferrer">Setup guide ↗</a></div>
+    <aside class="speaker-note">Sandbox onboarding: open https://dashboard.linqapp.com/sandbox, verify your account for the seven-day free trial, and activate your sandbox. Follow the dashboard prompts. Linq publicly advertises a seven-day trial at https://linqapp.com/. The official API quickstart is https://docs.linqapp.com/channel/imessage/getting-started/quickstart/; it covers tokens, provisioned numbers, messaging and webhooks. The account-verification and activation labels were supplied by the presenter; the dashboard onboarding requires sign-in and was not independently completed. Stop the CLI before starting phone mode. Keys, distinct E.164 owner and line numbers, signing secret, provisioned line, filtered subscription, and HTTPS tunnel must be ready from prework. Start the tunnel to port 3400 and verify the current webhook URL. The supplied worker uses the same answer function, durable queue, signature verification, owner checks, and idempotent send. Terminal output is not proof of a phone round trip. Do not modify the independent instructor solution. Set the milestone in .env and restart. Verify the checkpoint before continuing.</aside>
+  </section>
+
+  <section aria-label="Slide 22" class="slide prompt-slide preview-compare weather-compare" data-time="Workshop 35:00–36:00" data-title="Before and after: Exa weather OG card">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 06 / Link previews</span></div><h1>From a URL to a weather card.</h1>
+    <div class="preview-comparison"><div><span class="mono">Before / URL only</span><div class="message-example-label">iMessage</div><div class="weather-url-bubble">https://exa.ai/library/weather/san-francisco-california-united-states?latitude=37.7893&amp;longitude=-122.4220&amp;date=2026-11-07</div></div><i>→</i><div><span class="mono">After / Rich preview in iMessage</span><div class="message-example-label">iMessage</div><a class="weather-imessage-card" href="https://exa.ai/library/weather/san-francisco-california-united-states?latitude=37.7893&amp;longitude=-122.4220&amp;date=2026-11-07" target="_blank" rel="noopener noreferrer"><img src="assets/exa-sf-weather-og.png" alt="Actual Exa weather OG image: San Francisco, 60 degrees, clear sky, feels like 58 degrees, Saturday November 7."><div><strong>Weather in San Francisco, CA · Sat, Nov 7</strong><span>exa.ai</span></div></a></div></div>
+    <div class="preview-compare-footer"><span>Example preview · Nov 7, 2026</span><a href="https://exa.ai/library/weather" target="_blank" rel="noopener noreferrer">Exa Library weather ↗</a></div>
+    <aside class="speaker-note">One minute. Before: a plain URL to the Exa Library San Francisco weather result. After: the same URL sent as a native Linq link part and rendered as an iMessage rich preview. The embedded blue card is the actual image fetched from this source page's og:image metadata, not an invented weather graphic. The message frame is illustrative, not a screenshot of a delivered iMessage. This source is the November 7, 2026 snapshot supplied by the presenter: 60°F, clear sky, feels like 58°F. Do not present the static image as current weather. For a live demonstration, send a fresh returned Exa Library weather URL. Linq obtains metadata from that URL. The current repository implements iMessage/RCS through Linq, with SMS plain-URL fallback; WhatsApp is not implemented. The next slide adds the source-card feature to the attendee baseline. Source URL: https://exa.ai/library/weather/san-francisco-california-united-states?latitude=37.7893&amp;longitude=-122.4220&amp;date=2026-11-07 .</aside>
+  </section>
+
+  <section aria-label="Slide 23" class="slide prompt-slide feature-prompt" data-time="Workshop 36:00–40:00" data-title="Feature 6: add source cards">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Build 06 / Add the feature</span></div><h1>Turn source links into cards.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding agent</span><button class="copy-prompt" data-copy="prompt-cards">Copy prompt</button></div><pre class="build-prompt" id="prompt-cards">Implement TODO 6 in starter/integrations.ts.
+Extract public HTTPS URLs; prefer returned Exa Library URLs.
+In deliverReply, pass sourceCards(text) to sendReply.
+Send a short summary without raw URLs, then ONE OG card.
+Use sourceCardLimit(request) for explicitly requested extras.
+Keep plain texting: no bold, Markdown, or bullet lists.
+Run typecheck and tests. Restart starter:phone.
+Repeat the same search and compare before vs after.</pre><div class="prompt-file"><span>Edit</span><code>starter/integrations.ts · TODO 6</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Restart the phone agent</span><pre class="prompt-run">npm run starter:phone</pre><p>Keep ngrok running.</p></div><div class="prompt-pass"><span class="mono">03 / Compare</span><p>Repeat the same search.<br>Now see a source card<br>with a title and image<br>when the page provides them.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Find sushi in San Francisco around $150 per person. Include sources.</p></div><a href="https://docs.linqapp.com/channel/imessage/guides/messaging/rich-link-previews/" target="_blank" rel="noopener noreferrer">Link-preview docs ↗</a></div>
+    <aside class="speaker-note">Four minutes. TODO 5 establishes text-only phone delivery by passing [] as the final sendReply argument. TODO 6 implements sourceCards(text), then passes its result instead. The complete replyLinks function in src/linq.ts is the reference; students can inspect it. The supplied transport handles one HTTPS link per message and stable per-card idempotency keys. Validate and deduplicate at most three links. No new API key, OG scraping service, or additional Exa search is required. Stop the starter process, restart it, and repeat the exact same phone request used before the change. Actual previews depend on public source metadata; SMS is a plain URL fallback. Three cards consume up to three outbound Linq messages. Test retries and no-link responses. The instructor solution already enables cards. The environment reference is on slide 26.</aside>
+  </section>
+
+  <section aria-label="Slide 24" class="slide prompt-slide optional-feature optional-reaction" data-time="Optional extension · +5–10 minutes" data-title="Optional: emoji reactions">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Optional / 07 Reactions</span></div><h1>👀 Before the answer arrives.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding agent</span><button class="copy-prompt" data-copy="prompt-reaction">Copy prompt</button></div><pre class="build-prompt" id="prompt-reaction">Implement TODO 7 in starter/extras.ts; see src/extras.ts.
+Choose an emoji from the query; default to 👀.
+POST a Linq custom reaction using LINQ_API_KEY.
+Target the inbound message ID, not the webhook event ID.
+Connect a best-effort acknowledgment hook in Worker.
+React before generation; use a 3-second timeout.
+Keep owner checks, deduplication, and reply retries.
+Run checks; restart starter:phone. Text “Find sushi in SF”.</pre><div class="prompt-file"><span>Edit</span><code>starter/extras.ts · TODO 7</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Run</span><pre class="prompt-run">npm run typecheck
+npm test
+npm run starter:phone</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>Sushi gets 🍣. Weather gets 🌦️.
+Then the answer arrives.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Send a research request.</p></div><a href="https://docs.linqapp.com/channel/imessage/guides/messaging/reactions/" target="_blank" rel="noopener noreferrer">Linq reactions docs ↗</a></div>
+    <aside class="speaker-note">Emoji acknowledgment is an optional attendee extension, enabled in the complete instructor demo. Implement the named starter function and connect it to the durable worker before generation, not to the synchronous webhook response. The supplied Job.id encodes chatId:messageId; preserve the original message resource ID or derive it by removing job.chat plus the colon, never use event_id as the message ID. POST to https://api.linqapp.com/api/partner/v3/messages/{messageId}/reactions with Bearer LINQ_API_KEY and JSON operation add, type custom, custom_emoji 👀. Reactions are an iMessage feature. Bound reaction latency; fail open for the main answer. Duplicate deliveries must not multiply jobs, and a reaction retry must not duplicate the actual answer. Test using an inbound message from the configured owner. No new credential is needed.</aside>
+  </section>
+
+  <section aria-label="Slide 25" class="slide prompt-slide optional-feature optional-voice" data-time="Optional extension · +15–20 minutes" data-title="Optional: OpenRouter voice reply">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Optional / 08 Audio replies</span></div><h1>Let your agent speak.</h1>
+    <div class="prompt-layout"><div class="prompt-main"><div class="prompt-label"><span class="mono">01 / Paste into your coding agent</span><button class="copy-prompt" data-copy="prompt-voice">Copy prompt</button></div><pre class="build-prompt" id="prompt-voice">Implement TODO 8 in starter/extras.ts.
+Add voice routing in starter/server.ts.
+Use src/extras.ts and docs/WORKSHOP.md as references.
+Also recognize “send me a voice note” / “read that aloud”.
+Generate a short Qwen answer, then call OpenRouter TTS:
+  mistralai/voxtral-mini-tts-2603, en_paul_neutral, mp3.
+Validate audio/mpeg; save the MP3 under .data/audio/.
+Upload bytes to Linq; send attachment_id via /voicememo.
+Persist audio and delivery state; prevent duplicate sends.
+Run checks; restart starter:phone. Test /voice Say hello.</pre><div class="prompt-file"><span>Edit</span><code>starter/extras.ts · TODO 8</code></div></div><div class="prompt-actions"><div><span class="mono">02 / Run</span><pre class="prompt-run">npm run typecheck
+npm test
+npm run starter:phone</pre></div><div class="prompt-pass"><span class="mono">03 / Check</span><p>Hear the MP3 on your phone.
+Then try “read that aloud”.</p></div></div></div>
+    <div class="prompt-footer"><div><span class="mono">Try it</span><p>Text: /voice Say hello in one sentence.</p></div><a href="https://openrouter.ai/docs/guides/overview/multimodal/tts" target="_blank" rel="noopener noreferrer">OpenRouter TTS docs ↗</a><a href="https://docs.linqapp.com/channel/imessage/guides/messaging/voice-memos/" target="_blank" rel="noopener noreferrer">Linq voice docs ↗</a></div>
+    <aside class="speaker-note">Voice replies are an optional attendee exercise. The complete instructor demo now supports explicit /voice requests. Keep Qwen as the text reasoning model; use a dedicated speech model only when the owner requests /voice. OpenRouter POST https://openrouter.ai/api/v1/audio/speech uses Bearer OPENROUTER_API_KEY and JSON model mistralai/voxtral-mini-tts-2603, voice en_paul_neutral, input a short plain-text answer, response_format mp3. This pair appears in the official OpenRouter TTS tutorial. A successful response contains binary audio, not a chat-completion JSON payload. Check HTTP status, audio/mpeg content type, and a bounded nonempty file; write to ignored .data/audio. Play locally with afplay on macOS or another installed player. Use Linq POST /v3/attachments to obtain upload_url, attachment_id and required_headers, then PUT raw MP3 bytes with exactly those headers. Do not add the Linq bearer token to the presigned upload URL. Send the uploaded attachment_id to POST /v3/chats/{chatId}/voicememo. Native inline voice playback is iMessage-only; RCS/SMS use audio attachment fallback. Keep owner scope and queue, cap spoken text, and persist the generated audio and attachment ID before sending so retries do not regenerate speech. Follow current endpoint idempotency support in the voice-memo reference; do not assume the normal text message idempotency field works there. This exercise sends audio; receiving and transcribing voice notes is a separate future extension. No public media-serving route is needed when using attachment uploads.</aside>
+  </section>
+
+  <section aria-label="Slide 26" class="slide prompt-slide env-reference" data-time="Reference · setup" data-title="Copy the environment template">
+    <div class="brand"><img src="assets/exa.svg" alt="Exa"><span>Setup / .env</span></div>
+    <h1>Your project’s environment file.</h1>
+    <div class="env-toolbar"><span>In your project folder: <code>cp .env.example .env</code> → <code>nano .env</code></span><button class="copy-prompt" data-copy="env-template">Copy full .env template</button><a href="assets/env.example" download=".env.example">Download .env.example ↗</a></div>
+    <div class="env-columns"><div><span class="mono">Add your credentials</span><pre>OPENROUTER_API_KEY=
+EXA_API_KEY=
+KERNEL_API_KEY=
+LINQ_API_KEY=
+LINQ_WEBHOOK_SECRET=
+LINQ_PHONE_NUMBER=
+OWNER_PHONE_NUMBER=</pre><p>Phone numbers include country codes.<br>Linq generates the webhook secret.</p></div><div><span class="mono">Workshop defaults</span><pre>WORKSHOP_MILESTONE=1
+MODEL_NAME=qwen/qwen3.8-27b
+MODEL_BASE_URL=https://openrouter.ai/api/v1
+MEM0_EMBEDDING_MODEL=qwen/qwen3-embedding-4b
+MEM0_EMBEDDING_DIMENSIONS=2560
+AGENT_TIMEZONE=America/Los_Angeles
+PORT=3400
+DATA_DIR=.data</pre><p>Start at milestone 1.<br>Increase to 5 as you finish each integration.</p></div></div>
+    <pre id="env-template" hidden># Copy to .env. Never commit real keys or phone numbers.
+# 1=model, 2=Exa, 3=Kernel, 4=Mem0, 5=Linq.
+WORKSHOP_MILESTONE=1
+EXA_API_KEY=
+OPENROUTER_API_KEY=
+MODEL_NAME=qwen/qwen3.8-27b
+MODEL_BASE_URL=https://openrouter.ai/api/v1
+# Optional alternative model-provider key:
+MODEL_API_KEY=
+MEM0_EMBEDDING_MODEL=qwen/qwen3-embedding-4b
+MEM0_EMBEDDING_DIMENSIONS=2560
+# Keep dimensions matched to the embedding model. Changing them requires reindexing.
+# Empty uses the model endpoint/key above.
+MEM0_EMBEDDING_BASE_URL=
+MEM0_EMBEDDING_API_KEY=
+# Milestone 3: rendered page inspection in a Kernel cloud browser:
+KERNEL_API_KEY=
+AGENT_TIMEZONE=America/Los_Angeles
+LINQ_API_KEY=
+LINQ_WEBHOOK_SECRET=
+LINQ_PHONE_NUMBER=
+OWNER_PHONE_NUMBER=
+PORT=3400
+DATA_DIR=.data
+</pre>
+    <aside class="speaker-note">Reference slide linked from the early clone slide. The Copy full .env template button copies the complete blank .env.example, including optional provider overrides; no real credentials appear. Download offers the same template as a file. Copy it to .env in the project root and edit locally with nano .env. Keep any values already filled in when updating an existing .env. LINQ_WEBHOOK_SECRET is populated by API subscription creation later; it is not invented by the attendee. Start WORKSHOP_MILESTONE at 1, then increase after each integration checkpoint. The default OpenRouter key also serves memory extraction and embeddings, so optional MODEL_API_KEY and MEM0_EMBEDDING_API_KEY may remain blank. Save in nano with Ctrl+O, Enter, Ctrl+X.</aside>
+  </section>
+</div>
+</main>
+<nav aria-label="Presentation controls"><span id="slide-count">01 / 26</span><span id="slide-label">OSS Personal Agents</span><button id="previous" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><button id="notes-toggle" aria-label="Show speaker notes">Notes</button><button id="fullscreen" aria-label="Toggle fullscreen">↗</button></nav>
+<aside id="notes-panel" hidden><div><span id="notes-time"></span><button id="notes-close" aria-label="Close notes">×</button></div><h2 id="notes-title"></h2><p id="notes-text"></p></aside>
+</body>
+</html>

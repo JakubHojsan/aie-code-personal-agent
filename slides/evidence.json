@@ -1,0 +1,25 @@
+{
+  "checkedOn": "2026-11-06",
+  "source": {
+    "title": "Robin San Francisco official hours and location page",
+    "url": "https://www.robinomakase.com/location/robin-san-francisco/",
+    "facts": {
+      "experience": "Personalized omakase",
+      "publishedPriceRangeUsdPerPerson": [
+        119,
+        219
+      ],
+      "address": "620 Gough Street, San Francisco"
+    }
+  },
+  "ownerBudgetUsdPerPerson": 150,
+  "budgetBasis": "Before tax and tip; confirm drinks and any fees separately.",
+  "provenance": "Manually checked official source. Not a captured Exa, Kernel, or model response.",
+  "limits": [
+    "Prices can change",
+    "A $150 option must be confirmed with the restaurant",
+    "No noise-level evidence",
+    "No table-availability evidence",
+    "Published range is not the final dinner bill"
+  ]
+}

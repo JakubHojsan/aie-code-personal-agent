@@ -1,0 +1,23 @@
+{
+  "capturedAt": "2026-11-06T02:05:36.657Z",
+  "endpoint": "POST /search",
+  "request": {
+    "query": "Robin San Francisco omakase official price range",
+    "type": "auto",
+    "numResults": 5,
+    "contents": {
+      "highlights": true
+    }
+  },
+  "results": [
+    {
+      "title": "Menlo Park | Robin in CA",
+      "url": "https://www.robinomakase.com/location/robin-san-francisco/",
+      "highlights": [
+        "Prices range from $119 to $219 depending on each guests unique preferences."
+      ]
+    }
+  ],
+  "returnedResultCount": 5,
+  "selection": "Official San Francisco result retained from the real API response. Highlight shortened to a verbatim price passage; other results omitted."
+}

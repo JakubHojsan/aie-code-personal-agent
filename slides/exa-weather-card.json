@@ -1,0 +1,15 @@
+{
+  "source": "https://exa.ai/library/weather/san-francisco-california-united-states?latitude=37.7893&longitude=-122.4220&date=2026-11-07",
+  "metadata": {
+    "og:title": "Weather in San Francisco, CA \u00b7 Sat, Nov 7",
+    "og:description": "Clear sky, 60\u00b0F (15.3\u00b0C), feels like 58\u00b0F. Humidity 79%, winds 5 mph WSW. Open-Meteo model estimate for 5:30 PM GMT-8.",
+    "og:url": "https://exa.ai/library/weather/san-francisco-california-united-states?latitude=37.7893&longitude=-122.4220&date=2026-11-07",
+    "og:image": "https://exa.ai/api/library/og?label=San+Francisco&glyph=weather-clear-night&value=60%C2%B0&title=Weather+in+San+Francisco%2C+CA+%C2%B7+Sat%2C+Nov+7&line=Clear+sky+%C2%B7+Feels+like+58%C2%B0&line=Sat%2C+Nov+7&v=5",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+    "og:image:alt": "Weather in San Francisco, CA \u00b7 Sat, Nov 7",
+    "og:type": "website"
+  },
+  "provenance": "Presenter supplied the weather result URL; actual OG metadata and image fetched from that page. Not a captured phone delivery.",
+  "snapshotDate": "2026-11-07"
+}
