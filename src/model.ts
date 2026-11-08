@@ -60,4 +60,3 @@ export const complete: Complete = async (messages, tools, signal) => {
     throw new ModelRequestError('invalid_response');
   }
 };
-

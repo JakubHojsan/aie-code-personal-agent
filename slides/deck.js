@@ -78,4 +78,3 @@ addEventListener('keydown', event => {
   if (event.key.toLowerCase() === 'f') fullscreen();
   if (event.key === 'Escape') notes.hidden = true;
 });
-

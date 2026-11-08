@@ -35,4 +35,3 @@ export function messageSummary(text: string): string {
     .replace(/^\s*(?:sources?|references?|links?|menu)\s*:?\s*$/gim, '')
     .replace(/\n{3,}/g, '\n\n').trim();
 }
-
