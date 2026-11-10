@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Presenter · Exa in Personal Agents</title><link rel="stylesheet" href="/presenter.css"><script type="module" src="/presenter.js"></script></head>
+<body>
+  <header><div><span class="eyebrow">Exa in Personal Agents</span><h1>Presenter view</h1></div><div class="header-actions">
+    <span id="position" aria-label="Current slide"></span>
+    <div class="clock"><span id="elapsed" aria-label="Elapsed presentation time">00:00</span><button id="timer-toggle">Start timer</button><button id="timer-reset">Reset</button></div>
+    <span id="connection" role="status">Waiting for audience window</span><button id="open-audience">Open audience window ↗</button>
+  </div></header>
+  <p class="sharing-hint">Share only the audience window. Keep this window and your notes on your own screen.</p>
+  <main>
+    <section class="slides-pane" aria-label="Slide previews and controls">
+      <div class="preview-heading"><h2 id="current-label">Current slide</h2></div>
+      <div class="preview"><iframe id="current-slide" title="Current slide preview" tabindex="-1" sandbox="allow-same-origin"></iframe></div>
+      <div class="navigation"><button id="previous" aria-label="Previous slide">← Previous</button><select id="slide-picker" aria-label="Go to slide"></select><button id="next">Next →</button></div>
+      <div class="demo-controls"><button id="advance-demo" hidden>Advance example conversation →</button></div>
+      <p class="preview-note">The current preview follows the audience window, including the example and live demo.</p>
+      <div class="next-slide"><h2 id="next-label">Next slide</h2><div class="preview"><iframe id="next-slide" title="Next slide preview" tabindex="-1" sandbox="allow-same-origin"></iframe></div></div>
+    </section>
+    <section class="notes-pane" aria-label="Speaker notes">
+      <div class="notes-heading"><div><span id="timing" class="eyebrow"></span><h2 id="slide-title">Loading notes…</h2></div><div class="type-controls"><button id="smaller" aria-label="Smaller notes">A−</button><button id="larger" aria-label="Larger notes">A+</button></div></div>
+      <div class="notes-scroll"><div class="script-toolbar"><span id="note-kind" class="eyebrow">Speaker notes</span><button id="edit-script">Edit script</button></div><div id="speaker-script" class="script"></div>
+        <div id="script-editor" hidden><label for="script-input">Your script for this slide</label><textarea id="script-input" rows="12"></textarea><p>Saved in this browser. Export a copy to keep or share it.</p><button id="save-script">Save script</button><button id="cancel-script">Cancel</button></div>
+        <div class="script-actions"><button id="restore-notes">Use deck notes</button><button id="export-notes">Export my notes</button></div>
+        <p id="save-status" role="status"></p><p id="load-error" role="alert" hidden>Couldn’t load the deck. <button id="retry">Try again</button></p>
+      </div>
+    </section>
+  </main>
+</body></html>

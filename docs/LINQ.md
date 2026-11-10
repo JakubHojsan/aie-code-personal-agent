@@ -1,5 +1,7 @@
 # Connect Linq to your laptop
 
+This guide uses `MESSAGING_CHANNEL=linq` (the default). For the complete demo's optional WhatsApp text channel, follow [WhatsApp setup](WHATSAPP.md).
+
 Complete this before the workshop. Each independently running agent needs its own provisioned Linq line, subscription, signing secret, and HTTPS tunnel URL. Arrange account access and line provisioning with the organizer; do not assume an API key alone includes a usable line. A shared organizer line cannot independently route each participant's conversation to every laptop using this single-owner starter.
 
 ## Activate your sandbox

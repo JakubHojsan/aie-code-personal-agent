@@ -2,13 +2,15 @@
 
 Build an agent that remembers your preferences, searches the web, and replies on your phone. The workshop starts with a terminal conversation and ends with iMessage: a short answer, a source card, and optional emoji reactions and voice replies.
 
+The complete demo also supports **WhatsApp** for text replies and source links. Choose `MESSAGING_CHANNEL=whatsapp` and follow [WhatsApp setup](docs/WHATSAPP.md); Linq remains the default and the workshop's messaging exercise.
+
 The agent runs on your laptop. Qwen inference, Exa search, Kernel browsers, and Linq messaging run through hosted APIs. Mem0 stores your preferences locally and uses OpenRouter for extraction and embeddings.
 
 [Workshop guide](docs/WORKSHOP.md) · [Slides PDF](slides/DECK.pdf) · [Instructor guide](docs/FACILITATOR.md)
 
 ## Before you arrive
 
-- Git and access to this private repository.
+- Git. The workshop repository is public: [github.com/JakubHojsan/aie-code-personal-agent](https://github.com/JakubHojsan/aie-code-personal-agent).
 - Node.js **26.12.1+**, with npm. We recommend [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) for macOS, Linux, or Windows WSL. Install it before class and reopen your terminal.
 - A coding assistant running locally, with support for MCP.
 - An OpenRouter key to start. Arrange Exa, Kernel, and [Linq sandbox access](docs/LINQ.md) before the workshop so you can complete the phone exercises.
@@ -67,6 +69,8 @@ Use terminal chat through step 4. After [Linq and ngrok setup](docs/LINQ.md), sw
 
 Optional exercises in [starter/extras.ts](starter/extras.ts) add query-based emoji reactions and voice replies through OpenRouter TTS.
 
+After the workshop, try [passive email notifications and calendar reminders](docs/FOLLOWUP-NOTIFICATIONS.md). This separate follow-up exercise covers background polling, durable delivery, and an optional upgrade to push notifications; it is not part of the workshop answer key.
+
 ## Run the complete demo
 
 The finished implementation lives in `src/` and works independently of the starter exercises.
@@ -87,15 +91,23 @@ npm run solution:phone
 Text the Linq number from your configured owner number:
 
 ```text
-/remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.
+Remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.
 Find a sushi dinner option for Friday.
-/memories
-/voice Tell me about your recommendation in one sentence.
+What do you remember about me?
+Send me a voice note about your recommendation in one sentence.
 ```
 
 Search replies include a short summary and one source card by default. Ask for more sources to get up to three. The complete version also chooses emoji reactions from the request and supports natural requests such as “send me a voice note.”
 
+The Linq solution shows an iMessage typing bubble while preparing a reply, refreshes it during longer requests, and clears it after delivery or failure. Typing API failures never block the answer. [Linq typing indicators](https://docs.linqapp.com/channel/imessage/guides/chats/typing-indicators/) require iMessage and work most reliably after a recent outbound message in the chat; SMS and RCS do not display them.
+
+Replies use a playful texting style with a few relevant emojis, adapting to serious topics and requests for no emojis. For smarter Linq reactions, set `REACTION_MODE=jev` with `OPENROUTER_API_KEY`. [Jev](https://openrouter.ai/blog/insights/what-is-jev/) chooses a reaction from the current message using OpenRouter’s Decisions API; the chat model still writes the answer. Only the current message is sent for this decision. Jev can skip reactions for sensitive messages; errors or a two-second timeout fall back to local keyword reactions. The default `REACTION_MODE=local` needs no extra API call. WhatsApp does not use reaction selection.
+
 Keep your laptop awake and ngrok running. If the tunnel URL changes, update the webhook subscription. Stop terminal chat before starting phone mode; use one agent process per data directory. Only messages from the configured owner are accepted.
+
+### Optional WhatsApp channel
+
+Follow [docs/WHATSAPP.md](docs/WHATSAPP.md) to obtain Meta Cloud API credentials and connect `/webhooks/whatsapp`. Set `MESSAGING_CHANNEL=whatsapp` and `WORKSHOP_MILESTONE=5` in `.env`, fill in the `WHATSAPP_*` settings, then run `npm run doctor` and `npm run solution:phone`. WhatsApp mode does not require Linq credentials. Text, search, memory, and source links are supported; voice replies and emoji reactions remain Linq features. The starter exercise still uses Linq.
 
 ## Present
 

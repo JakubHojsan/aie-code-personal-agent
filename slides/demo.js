@@ -16,7 +16,7 @@ const exampleTurns = [
     ['I’ll keep your food preferences and budget. The source does not establish noise level, so I need another source or confirmation from the restaurant before calling it a quiet option.', 'agent'],
   ],
   [
-    ['/memories', 'user'],
+    ['What do you remember about me?', 'user'],
     ['San Francisco\nSushi\n$150 per person, before tax and tip', 'agent'],
   ],
 ];
@@ -50,7 +50,7 @@ document.querySelector('#example-mode').onclick = () => setMode('example');
 document.querySelector('#live-mode').onclick = () => setMode('live');
 document.querySelector('#example-next').onclick = () => { exampleStep = Math.min(exampleStep + 1, exampleTurns.length - 1); renderExample(); };
 document.querySelector('#example-reset').onclick = () => { exampleStep = 0; renderExample(); };
-messages.addEventListener('click', event => { if (event.target.closest('#remember-prompt')) fill('/remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.'); });
+messages.addEventListener('click', event => { if (event.target.closest('#remember-prompt')) fill('Remember I live in San Francisco, love sushi, and budget $150 per person before tax and tip.'); });
 function fill(text) { input.value = text; input.focus(); }
 document.querySelectorAll('[data-prompt]').forEach(button => button.onclick = () => fill(button.dataset.prompt));
 

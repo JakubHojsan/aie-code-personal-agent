@@ -5,9 +5,12 @@ import { deliverReply } from './integrations.ts';
 import { Store } from '../src/store.ts';
 import { Worker } from '../src/worker.ts';
 
-try { assertReady(true); } catch (error) { console.error((error as Error).message); process.exit(1); }
+try {
+  if (config.messagingChannel !== 'linq') throw new Error('The starter messaging exercise uses Linq. For WhatsApp, use npm run solution:phone and docs/WHATSAPP.md.');
+  assertReady(true);
+} catch (error) { console.error((error as Error).message); process.exit(1); }
 const store = new Store(config.dataDir);
-const worker = new Worker(store, (scope, text) => answer(store, scope, text), deliverReply);
+const worker = new Worker(store, (scope, text) => answer(store, scope, text), deliverReply, undefined, 'linq');
 const wake = () => { void worker.tick().catch(() => console.error('Worker storage error.')); };
 const server = webhookServer(store, { owner: config.owner, line: config.line, secret: config.webhookSecret }, wake);
 const timer = setInterval(wake, 1000);

@@ -1,3 +1,10 @@
+import { updateHighlights } from './highlights.js';
+import { connectPresenter } from './presenter-sync.js';
+
+const params = new URLSearchParams(location.search);
+const audienceMode = params.has('present') || params.has('preview');
+document.body.classList.toggle('audience-mode', audienceMode);
+
 const slides = [...document.querySelectorAll('.slide')];
 async function copyText(text) {
   try {
@@ -35,7 +42,7 @@ document.querySelectorAll('[data-copy]').forEach(button => {
 });
 let index = 0;
 function resize() {
-  document.documentElement.style.setProperty('--scale', Math.min(innerWidth / 1600, (innerHeight - 42) / 900));
+  document.documentElement.style.setProperty('--scale', Math.min(innerWidth / 1600, (innerHeight - (audienceMode ? 0 : 42)) / 900));
 }
 function show(next) {
   index = Math.max(0, Math.min(slides.length - 1, next));
@@ -49,7 +56,9 @@ function show(next) {
   document.querySelector('#notes-time').textContent = slides[index].dataset.time;
   document.querySelector('#notes-title').textContent = slides[index].dataset.title;
   document.querySelector('#notes-text').textContent = slides[index].querySelector('.speaker-note').textContent;
+  updateHighlights(slides[index]);
   history.replaceState(null, '', `#slide-${index + 1}`);
+  dispatchEvent(new Event('deck:slidechange'));
 }
 const fromHash = () => show(Number(location.hash.match(/slide-(\d+)/)?.[1] || 1) - 1);
 addEventListener('resize', resize);
@@ -74,7 +83,9 @@ addEventListener('keydown', event => {
   if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
   if (event.key === 'Home') show(0);
   if (event.key === 'End') show(slides.length - 1);
-  if (event.key.toLowerCase() === 'n') notes.hidden = !notes.hidden;
+  if (event.key.toLowerCase() === 'n' && !audienceMode) notes.hidden = !notes.hidden;
+  if (event.key.toLowerCase() === 'p' && !params.has('preview')) document.querySelector('#presenter-link').click();
   if (event.key.toLowerCase() === 'f') fullscreen();
   if (event.key === 'Escape') notes.hidden = true;
 });
+connectPresenter({ slides, getIndex: () => index, show });

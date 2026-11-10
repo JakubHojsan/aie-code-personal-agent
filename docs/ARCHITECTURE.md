@@ -43,7 +43,7 @@ The tool reads page title, URL, and bounded visible body text. The model receive
 
 Signature validation checks the raw webhook body and a five-minute timestamp window. Event and message identifiers deduplicate incoming jobs. Only the configured owner’s direct messages on the configured line reach the agent. The queue acknowledges promptly, processes in order, retries failures, and reuses a stable outbound idempotency key.
 
-The model has a bounded tool loop, at most eight tool calls and one browser task per reply. Memory is saved explicitly with `/remember`. The application avoids logging provider payloads or phone numbers. Run one server per data directory; this is a single-owner teaching application.
+The model has a bounded tool loop, at most eight tool calls and one browser task per reply. From milestone 4, memory tools handle explicit requests to remember, list, or forget preferences; help and conversation reset are also tools. Automatic recall remains application-managed. Slash commands are optional shortcuts. The application avoids logging provider payloads or phone numbers. Run one server per data directory; this is a single-owner teaching application.
 
 The stage phone UI calls the same `answer()` function through a local HTTP endpoint, with an isolated profile. It does not simulate Linq transport or share the owner’s phone conversation. The default worked-example mode is authored teaching content based on a checked source; it makes no model or tool calls. Switching to Live agent uses the real local HTTP endpoint. If keys are missing, live mode shows an unconfigured state. Worked-example messages never enter live chat history or Mem0.
 

@@ -2,9 +2,11 @@
 // running agent; complete and connect each exercise deliberately.
 
 export async function acknowledgeMessage(_messageId: string, _signal: AbortSignal): Promise<void> {
-  // TODO 7: Linq custom emoji reaction. Use LINQ_API_KEY, operation add,
-  // type custom, and a query-based custom_emoji (fallback 👀). Connect before generation;
-  // reaction failures must not block the real reply.
+  // TODO 7: Extend this signature to receive message text. Use Jev to choose a
+  // Linq custom emoji (or none), with local queryEmoji fallback; see src/reactions.ts.
+  // Wire acknowledgment, then a typing helper in starter/server.ts; see src/typing.ts.
+  // Refresh typing every 60s and return cleanup for Worker to call in finally.
+  // Keep reaction/typing failures best effort. See docs/WORKSHOP.md.
   throw new Error('TODO 7: implement emoji acknowledgment. See docs/WORKSHOP.md.');
 }
 

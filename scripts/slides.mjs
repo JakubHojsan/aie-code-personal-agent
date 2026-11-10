@@ -4,12 +4,21 @@ import { config, assertReady } from '../src/config.ts';
 import { answer } from '../src/agent.ts';
 import { Store } from '../src/store.ts';
 
+const partnerAssets = ['similarweb.svg', 'crunchbase.avif', 'zoominfo.png', 'harmonic.svg', 'jinko.svg', 'particle.svg',
+  'baselayer.svg', 'fiber.svg', 'affiliate.svg', 'financial-datasets.svg', 'definitive-healthcare.jpg', 'faraday.jpg',
+  'intellizence.jpg', 'kernel.png', 'openalex.jpg', 'traject-data.jpg', 'databento.jpg', 'alpha-vantage.png'].map(name => `connect/${name}`);
+const customerAssets = ['cursor.svg', 'cognition.png', 'hubspot.png'].map(name => `customers/${name}`);
 const assets = new Map([
   ['/', ['index.html', 'text/html']], ['/index.html', ['index.html', 'text/html']],
   ['/deck.css', ['deck.css', 'text/css']], ['/deck.js', ['deck.js', 'text/javascript']],
   ['/demo.js', ['demo.js', 'text/javascript']],
+  ['/highlights.js', ['highlights.js', 'text/javascript']],
+  ['/presenter', ['presenter.html', 'text/html']], ['/presenter.html', ['presenter.html', 'text/html']],
+  ['/presenter.js', ['presenter.js', 'text/javascript']], ['/presenter.css', ['presenter.css', 'text/css']],
+  ['/presenter-sync.js', ['presenter-sync.js', 'text/javascript']],
   ['/assets/env.example', ['assets/env.example', 'text/plain']],
-  ...['exa.svg', 'mem0.svg', 'qwen.png', 'similarweb.svg', 'financial-datasets.svg', 'particle.svg', 'linq-api-tokens.png', 'ngrok-authtoken.png', 'exa-sf-weather-og.png'].map(name => [`/assets/${name}`, [`assets/${name}`, name.endsWith('.svg') ? 'image/svg+xml' : 'image/png']]),
+  ...['exa.svg', 'mem0.svg', 'qwen.png', 'similarweb.svg', 'financial-datasets.svg', 'particle.svg', 'linq-api-tokens.png', 'ngrok-authtoken.png', 'exa-sf-weather-og.png', 'imessage-demo-hero.png', ...partnerAssets, ...customerAssets]
+    .map(name => [`/assets/${name}`, [`assets/${name}`, name.endsWith('.svg') ? 'image/svg+xml' : name.endsWith('.avif') ? 'image/avif' : name.endsWith('.jpg') ? 'image/jpeg' : 'image/png']]),
 ]);
 let store;
 let busy = false;

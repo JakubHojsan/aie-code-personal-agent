@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { config } from './config.ts';
 import type { Store, Job } from './store.ts';
+import { jevReaction } from './reactions.ts';
 
 const linqBase = 'https://api.linqapp.com/api/partner/v3';
 const auth = () => ({ Authorization: `Bearer ${config.linqKey}`, 'Content-Type': 'application/json' });
@@ -27,8 +28,14 @@ export function queryEmoji(text: string): string {
 export async function acknowledgeMessage(job: Job, request: typeof fetch = fetch): Promise<void> {
   const messageId = job.id.slice(job.chat.length + 1);
   if (!messageId || !job.id.startsWith(`${job.chat}:`)) throw new Error('Missing inbound message ID');
+  let emoji: string | null = queryEmoji(job.text);
+  if (config.reactionMode === 'jev') {
+    try { emoji = await jevReaction(job.text, request); }
+    catch { console.error('Jev reaction unavailable; using local emoji.'); }
+  }
+  if (emoji === null) return;
   const response = await request(`${linqBase}/messages/${encodeURIComponent(messageId)}/reactions`, {
-    method: 'POST', headers: auth(), body: JSON.stringify({ operation: 'add', type: 'custom', custom_emoji: queryEmoji(job.text) }),
+    method: 'POST', headers: auth(), body: JSON.stringify({ operation: 'add', type: 'custom', custom_emoji: emoji }),
     signal: AbortSignal.timeout(3000), redirect: 'error',
   });
   if (!response.ok) throw new Error(`Reaction HTTP ${response.status}`);

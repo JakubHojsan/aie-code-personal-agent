@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" version="1.1" id="svg1" width="1333.3333" height="1333.3333" viewBox="0 0 1333.3333 1333.3333">
+  <defs id="defs1">
+    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath2">
+      <path d="M 0,1000 H 1000 V 0 H 0 Z" transform="translate(-932.00005,-500.00001)" id="path2"/>
+    </clipPath>
+    <linearGradient x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-15.973965,-122.612,122.612,-15.973965,445.33557,378.95886)" spreadMethod="pad" id="linearGradient4">
+      <stop style="stop-opacity:1;stop-color:#333333" offset="0" id="stop2"/>
+      <stop style="stop-opacity:1;stop-color:#333333" offset="0.0001" id="stop3"/>
+      <stop style="stop-opacity:1;stop-color:#737373" offset="1" id="stop4"/>
+    </linearGradient>
+    <linearGradient x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-166.17506,-325.01199,325.01199,-166.17506,662.57117,769.43768)" spreadMethod="pad" id="linearGradient7">
+      <stop style="stop-opacity:1;stop-color:#8f8f8f" offset="0" id="stop5"/>
+      <stop style="stop-opacity:1;stop-color:#8f8f8f" offset="0.338542" id="stop6"/>
+      <stop style="stop-opacity:1;stop-color:#000000" offset="1" id="stop7"/>
+    </linearGradient>
+    <linearGradient x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-95.256035,-356.65298,356.65298,-95.256035,537.72217,634.70831)" spreadMethod="pad" id="linearGradient10">
+      <stop style="stop-opacity:1;stop-color:#a4a4a4" offset="0" id="stop8"/>
+      <stop style="stop-opacity:1;stop-color:#a4a4a4" offset="0.333333" id="stop9"/>
+      <stop style="stop-opacity:1;stop-color:#1d1d1d" offset="1" id="stop10"/>
+    </linearGradient>
+  </defs>
+
+  <g id="layer-MC0">
+    <path id="path1" d="m 0,0 c 0,-238.587 -193.413,-432 -432,-432 -238.587,0 -432,193.413 -432,432 0,238.587 193.413,432 432,432 C -193.413,432 0,238.587 0,0" style="fill:#efefef;fill-opacity:1;fill-rule:nonzero;stroke:none" transform="matrix(1.3333333,0,0,-1.3333333,1242.6667,666.66667)" clip-path="url(#clipPath2)"/>
+    <path id="path4" d="M 400,403.5 299.499,250.001 410.173,261.56 c 51.177,5.345 90.178,24.742 106.323,52.881 v 0 L 580.5,426 Z" transform="matrix(1.3333333,0,0,-1.3333333,0,1333.3333)" style="fill:url(#linearGradient4);stroke:none"/>
+    <path id="path7" d="m 538.693,676.716 c -30.379,-4.19 -59.087,-21.152 -76.329,-45.099 v 0 L 400,545 653.256,577.678 c 34.667,4.475 66.951,25.549 82.977,54.166 v 0 L 780,710 Z" transform="matrix(1.3333333,0,0,-1.3333333,0,1333.3333)" style="fill:url(#linearGradient7);stroke:none"/>
+    <path id="path10" d="m 357.507,515.107 c -29.469,-3.829 -57.377,-19.47 -74.803,-41.923 v 0 L 210,379.5 641.802,433.475 c 32.304,4.038 62.601,22.251 79.494,47.787 v 0 L 780,570 Z" transform="matrix(1.3333333,0,0,-1.3333333,0,1333.3333)" style="fill:url(#linearGradient10);stroke:none"/>
+  </g>
+</svg>

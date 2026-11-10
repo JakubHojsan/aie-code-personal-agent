@@ -33,8 +33,9 @@ test('milestones expose only enabled tools', () => {
   assert.deepEqual(toolsFor(1, false), []);
   assert.deepEqual(toolsFor(2, true).map(x => x.function.name), ['exa_search']);
   assert.deepEqual(toolsFor(3, true).map(x => x.function.name), ['exa_search', 'browse_page']);
-  assert.deepEqual(toolsFor(5, true).map(x => x.function.name), ['exa_search', 'browse_page']);
-  assert.deepEqual(toolsFor(5, false).map(x => x.function.name), ['exa_search']);
+  const memoryTools = ['remember_preference', 'list_memories', 'forget_memory', 'reset_conversation', 'agent_help'];
+  assert.deepEqual(toolsFor(5, true).map(x => x.function.name), ['exa_search', 'browse_page', ...memoryTools]);
+  assert.deepEqual(toolsFor(5, false).map(x => x.function.name), ['exa_search', ...memoryTools]);
 });
 
 test('signature validates original bytes, rejects tampering and stale requests', () => {
