@@ -67,7 +67,7 @@ npm run starter:chat
 
 Use terminal chat through step 4. After [Linq and ngrok setup](docs/LINQ.md), switch to `npm run starter:phone`. The doctor checks configuration; the checkpoint verifies the actual integration.
 
-Optional exercises in [starter/extras.ts](starter/extras.ts) add query-based emoji reactions and voice replies through OpenRouter TTS.
+Optional exercises in [starter/extras.ts](starter/extras.ts) add Jev emoji reactions followed by iMessage typing bubbles, or voice replies through OpenRouter TTS.
 
 After the workshop, try [passive email notifications and calendar reminders](docs/FOLLOWUP-NOTIFICATIONS.md). This separate follow-up exercise covers background polling, durable delivery, and an optional upgrade to push notifications; it is not part of the workshop answer key.
 
@@ -117,7 +117,9 @@ npm run slides
 
 Open [localhost:3402](http://127.0.0.1:3402). One deck covers the 12-minute overview and the workshop, which starts on slide 14. Allow 40 minutes for the core exercises and 8 minutes for Q&A; the optional exercises need extra time.
 
-Arrow keys navigate, **N** opens speaker notes, and **F** enters fullscreen. The deck opens without API keys and includes a labeled worked example. Switch to the live demo when configured.
+Open [presenter mode](http://127.0.0.1:3402/presenter), or press **P** in the deck, for synchronized current and next slides, editable speaker notes, and a timer. Click **Open audience window** and share only that window. Custom notes are saved in your browser; use **Export my notes** to download a copy.
+
+Arrow keys navigate, **N** opens inline speaker notes, and **F** enters fullscreen. The deck opens without API keys and includes a labeled worked example. Switch to the live demo when configured.
 
 ## Repository
 
