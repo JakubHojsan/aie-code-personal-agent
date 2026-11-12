@@ -2,6 +2,14 @@
 
 Build an agent that remembers your preferences, searches the web, and replies on your phone. The workshop starts with a terminal conversation and ends with iMessage: a short answer, a source card, and optional emoji reactions and voice replies.
 
+<p align="center">
+  <a href="docs/images/iphone-weather.png"><img src="docs/images/iphone-weather.png" width="330" alt="Illustrative iPhone in dark mode showing an iMessage reply, a rich Exa weather link card, bottom-left emoji reactions, and a typing bubble."></a>
+  &nbsp;&nbsp;
+  <a href="docs/images/iphone-memory.png"><img src="docs/images/iphone-memory.png" width="330" alt="Illustrative iPhone in light mode showing natural-language preference memory, emoji reactions, and a typing bubble."></a>
+</p>
+
+**On your phone:** rich source cards, remembered preferences, emoji reactions, and typing. These are illustrative iPhone previews, not device captures; the weather card uses the saved November 7, 2026 demo snapshot. [Preview source and image details](docs/images/README.md).
+
 The complete demo also supports **WhatsApp** for text replies and source links. Choose `MESSAGING_CHANNEL=whatsapp` and follow [WhatsApp setup](docs/WHATSAPP.md); Linq remains the default and the workshop's messaging exercise.
 
 The agent runs on your laptop. Qwen inference, Exa search, Kernel browsers, and Linq messaging run through hosted APIs. Mem0 stores your preferences locally and uses OpenRouter for extraction and embeddings.
